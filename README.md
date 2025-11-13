@@ -5,8 +5,8 @@
 <div align="center">
 
 <p align="center">
-  <img src="images/logoDaiNam.png" alt="DaiNam University Logo" width="200"/>
-  <img src="images/LogoAIoTLab.png" alt="AIoTLab Logo" width="170"/>
+  <img src="static/image/logoDaiNam.png" alt="DaiNam University Logo" width="200"/>
+  <img src="static/image/LogoAIoTLab.png" alt="AIoTLab Logo" width="170"/>
 </p>
 
 [![Made by AIoTLab](https://img.shields.io/badge/Made%20by%20AIoTLab-blue?style=for-the-badge)](https://www.facebook.com/DNUAIoTLab)
@@ -42,7 +42,7 @@ Hệ thống AI này kết hợp Machine Learning truyền thống và Generativ
 <img width="292" height="602" alt="image" src="https://github.com/user-attachments/assets/af2f160d-822a-49b4-ae62-4ce7194f8030" />
 
 
-### 1. Cài đặt Môi trường
+### Cài đặt Môi trường
 
 Tạo và kích hoạt môi trường ảo:
 
@@ -51,6 +51,10 @@ python -m venv venv
 source venv/bin/activate  # Trên Linux/macOS
 # hoặc
 .\venv\Scripts\activate   # Trên Windows
+Cài đặt thư viện
+```
+pip install -r requirements.txt
+```
 
 
 
