@@ -1,6 +1,6 @@
-<h1 align="center">HỆTHỐNGTRÍTUỆNHÂNTẠOPHÂNTÍCH
- CHỈ SỐKHỐICƠTHỂVÀĐỀXUẤTLIỆUPHÁP
- CẢI THIỆN SỨCKHỎE</h1>
+<h1 align="center">HỆ THỐNG TRÍ TUỆ NHÂN TẠO PHÂN TÍCH
+ CHỈ SỐ KHỐI CƠ THỂ VÀ ĐỀ XUẤT LIỆU PHÁP
+ CẢI THIỆN SỨC KHỎE</h1>
 
 <div align="center">
 
@@ -15,10 +15,10 @@
 
 </div>
 
-<h2 align="center">PHÂN LOẠI HOA QUẢ</h2>
+<h2 align="center">Be My trAIner</h2>
 
 <p align="left">
-HỆ THỐNG PHÂN LOẠI HOA QUẢ SỬ DỤNG ESP32CAM VÀ BĂNG CHUYỀN
+Hệ thống Phân tích BMI và Đề xuất Liệu pháp Sức khỏe Cá nhân
 </p>
 
 ---
