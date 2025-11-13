@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="alert alert-success text-center">
+            <h2 class="alert-heading">🎉 Chúng tôi đã thu thập đủ dữ liệu cần thiết để bắt đầu phân tích!</h2>
+            <p class="mb-0">Vui lòng kiểm tra lại thông tin trước khi nhấn **Phân tích ngay**.</p>
+        </div>
+
+        <div class="card p-4 mb-4">
+            <h4 class="card-title">Thông tin tổng hợp</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Họ tên:</strong> {{ data.ho_va_ten }}</li>
+                        <li class="list-group-item"><strong>Giới tính:</strong> {{ data.gioi_tinh }}</li>
+                        <li class="list-group-item"><strong>Tuổi:</strong> {{ data.tuoi }} ({{ data.tuoi_khoang }})</li>
+                        <li class="list-group-item"><strong>Loại hình thể tự chọn:</strong> {{ data.loai_hinh_the }}</li>
+                        <li class="list-group-item"><strong>Lộ trình:</strong> {{ data.so_ngay }} ngày</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Chiều cao:</strong> {{ data.chieu_cao_cm }} cm</li>
+                        <li class="list-group-item"><strong>Cân nặng hiện tại:</strong> {{ data.can_nang_kg }} kg</li>
+                        <li class="list-group-item"><strong>Cân nặng mong muốn:</strong> {{ data.can_nang_mong_muon }} kg</li>
+                        <li class="list-group-item"><strong>Calo nạp/tiêu hao:</strong> {{ data.calo_nap }} / {{ data.calo_tieu_hao }}</li>
+                        <li class="list-group-item"><strong>Ngủ trung bình:</strong> {{ data.thoi_gian_ngu }} giờ/ngày</li>
+                        <li class="list-group-item"><strong>BMI (ước tính):</strong> <span class="badge bg-secondary">{{ data.bmi }}</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <form action="{{ url_for('predict') }}" method="post" class="d-flex justify-content-center gap-3">
+                <button type="submit" class="btn btn-success btn-lg">Phân tích ngay</button>
+                <a href="{{ url_for('edit_info') }}" class="btn btn-outline-secondary btn-lg">Chỉnh sửa thông tin</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

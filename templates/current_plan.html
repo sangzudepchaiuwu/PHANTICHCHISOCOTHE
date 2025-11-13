@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-orange"><i class="fas fa-list-check"></i> Lộ trình Hiện tại</h2>
+    <hr>
+
+    {% if plan %}
+    <div class="card card-dark p-3 mb-4">
+        <h4 class="strong text-info">{{ plan.plan_name }}</h4>
+        <p>Thời gian: <strong>{{ plan.start_date }}</strong> đến <strong>{{ plan.end_date }}</strong></p>
+        <p class="text-muted">Tổng {{ daily_data|length }} ngày đã lên kế hoạch.</p>
+    </div>
+
+    <div class="accordion mt-3" id="dailyAccordion">
+        {% for day in daily_data %}
+        <div class="accordion-item bg-dark text-light mb-2 border-secondary">
+            <h2 class="accordion-header" id="heading{{ day.day }}">
+                <button class="accordion-button collapsed bg-dark text-warning" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{ day.day }}" aria-expanded="false" aria-controls="collapse{{ day.day }}">
+                    Ngày {{ day.day }}: {{ day.actual_date }}
+                    <span id="day-status-{{ day.day }}" class="ms-2">
+                        {% if day.all_completed %}
+                        <span class="badge bg-success">Hoàn thành</span>
+                        {% endif %}
+                    </span>
+                </button>
+            </h2>
+            <div id="collapse{{ day.day }}" class="accordion-collapse collapse" aria-labelledby="heading{{ day.day }}"
+                data-bs-parent="#dailyAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Danh sách To-do (Dinh dưỡng & Tập luyện)</h5>
+                            {% if day.todos %}
+                            <ul class="list-group list-group-flush">
+                                {% for i in range(day.todos|length) %}
+                                <li class="list-group-item bg-dark text-light border-secondary {% if day.completed_todos[i] %} completed {% endif %}">
+                                    <input type="checkbox" {% if day.completed_todos[i] %} checked {% endif %}
+                                        data-plan-id="{{ plan.id }}" data-day="{{ day.day }}" data-index="{{ i }}"
+                                        data-total="{{ day.todos|length }}">
+                                    {{ day.todos[i]|safe }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p class="text-muted">Không có mục To-do cụ thể.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5>Thông tin Gợi ý & Chi tiết</h5>
+                            {% if day.nutri_info %}
+                            {{ day.nutri_info|safe }}
+                            {% endif %}
+
+                            {% if day.workout_info %}
+                            {{ day.workout_info|safe }}
+                            {% endif %}
+
+                            {% if not day.nutri_info and not day.workout_info %}
+                            <p class="text-muted">Không có thông tin chi tiết bổ sung cho ngày này.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="alert alert-info">
+        Bạn chưa có lộ trình nào được xác nhận.
+    </div>
+    <p><a href="{{ url_for('bmi_form') }}" class="btn btn-warning">Tạo lộ trình mới ngay</a></p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', async (e) => {
+        const li = cb.closest('li');
+        const completed = cb.checked;
+        if (completed) {
+            li.classList.add('completed');
+        } else {
+            li.classList.remove('completed');
+        }
+
+        const data = {
+            plan_id: cb.dataset.planId,
+            day_number: cb.dataset.day,
+            todo_index: parseInt(cb.dataset.index),
+            completed: completed,
+            total_todos: parseInt(cb.dataset.total)
+        };
+
+        try {
+            const response = await fetch('/update_todo_progress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            const statusSpan = document.getElementById(`day-status-${data.day_number}`);
+            if (result.all_completed) {
+                statusSpan.innerHTML = '<span class="badge bg-success">Hoàn thành</span>';
+            } else {
+                statusSpan.innerHTML = '';
+            }
+        } catch (error) {
+            console.error('Error updating progress:', error);
+
+            cb.checked = !completed;
+            li.classList.toggle('completed');
+        }
+    });
+});
+</script>
+
+<style>
+.completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+</style>
+{% endblock %}

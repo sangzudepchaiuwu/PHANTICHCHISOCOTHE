@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-3">Nhập thông tin cá nhân</h2>
+
+  <!-- Progress bar -->
+  <div class="progress mb-4">
+    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+         role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100">
+      Bước <span id="progressText">1</span>  <span id="totalStepsText">9</span>
+    </div>
+  </div>
+
+  <form id="bmiForm" action="{{ url_for('analyzing_screen') }}" method="post" class="row g-3">
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <h4 class="mb-2">Họ và tên</h4>
+      <input type="text" name="ho_va_ten" class="form-control" placeholder="Nhập họ và tên" required>
+      <small class="text">Tên sẽ dùng để cá nhân hoá kết quả.</small>
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Giới tính -->
+    <div class="step">
+      <h4 class="mb-2 text-center">Chọn giới tính</h4>
+      <div class="d-flex justify-content-around flex-wrap">
+        <label class="text-center">
+          <input type="radio" name="gioi_tinh" value="Nam" class="visually-hidden gender-input" required>
+          <img src="{{ url_for('static', filename='images/image5.png') }}" alt="Nam" class="gender-img selectable">
+          <div class="gender-label mt-2">Nam</div>
+        </label>
+        <label class="text-center">
+          <input type="radio" name="gioi_tinh" value="Nữ" class="visually-hidden gender-input" required>
+          <img src="{{ url_for('static', filename='images/image4.png') }}" alt="Nữ" class="gender-img selectable">
+          <div class="gender-label mt-2">Nữ</div>
+        </label>
+      </div>
+      <small class="text d-block mt-2">Chạm vào hình để chọn.</small>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <h4 class="mb-2">Chọn khung độ tuổi</h4>
+      <select class="form-select" name="age_group" required>
+        <option value="">-- Chọn khung tuổi --</option>
+        <option value="18-25">18-25</option>
+        <option value="26-35">26-35</option>
+        <option value="36-45">36-45</option>
+        <option value="46+">46+</option>
+      </select>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Loại hình thể -->
+    <div class="step">
+      <h4 class="mb-2 text-center">Chọn loại hình thể hiện tại</h4>
+      <div id="bodyTypeContainer" class="d-flex justify-content-around flex-wrap">
+        <!-- Nội dung ảnh được cập nhật động bằng JS -->
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <h4 class="mb-2">Chọn lộ trình</h4>
+      <select class="form-select mb-2" name="lo_trinh" required>
+        <option value="Giảm cân">Giảm cân</option>
+        <option value="Tăng cân">Tăng cân</option>
+        <option value="Tăng cơ">Tăng cơ</option>
+        <option value="Duy trì">Duy trì sức khỏe</option>
+      </select>
+      <label>Số ngày</label>
+      <input type="number" name="so_ngay" class="form-control" value="30" required>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step">
+      <h4 class="mb-2">Chiều cao & Cân nặng</h4>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <label>Chiều cao (cm)</label>
+          <input type="number" step="0.1" name="chieu_cao_cm" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label>Cân nặng (kg)</label>
+          <input type="number" step="0.1" name="can_nang_kg" class="form-control" required>
+        </div>
+        <div class="col-12">
+          <label>Cân nặng mong muốn (kg)</label>
+          <input type="number" step="0.1" name="can_nang_mong_muon" class="form-control">
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step">
+      <h4 class="mb-2">Calo mỗi ngày</h4>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <label>Calo nạp</label>
+          <input type="number" name="calo_nap" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label>Calo tiêu hao</label>
+          <input type="number" name="calo_tieu_hao" class="form-control" required>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="step">
+      <h4 class="mb-2">Ngủ & Tuổi</h4>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <label>Thời gian ngủ</label>
+          <input type="number" name="thoi_gian_ngu" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label>Tuổi</label>
+          <input type="number" name="tuoi" class="form-control" required>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary prev-step">Quay lại</button>
+        <button type="button" class="btn btn-primary next-step">Tiếp tục</button>
+      </div>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="step text-center">
+      <h4 class="mb-3">Chúng tôi đã thu thập đủ dữ liệu để bắt đầu phân tích!</h4>
+      <button type="submit" class="btn btn-orange btn-lg mt-3">Phân tích ngay</button>
+    </div>
+
+  </form>
+</div>
+
+<style>
+.selectable { width:120px; border-radius:15px; cursor:pointer; transition:.2s; border:10px solid transparent; margin:auto; display:block; position:relative;}
+.selectable.selected { border-color:#28a745; box-shadow:0 0 10px rgba(40,167,69,.4);}
+.selectable.selected::after {content:"✓"; position:absolute; top:6px; right:10px; background:#28a745; color:#fff; border-radius:50%; padding:2px 7px;}
+.step { display:none; } 
+.step.active { display:block; }
+</style>
+
+<script>
+const steps = document.querySelectorAll(".step");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const totalStepsText = document.getElementById("totalStepsText");
+let currentStep = 0;
+const totalSteps = steps.length;
+let selectedGender = null;
+
+totalStepsText.textContent = totalSteps;
+
+function showStep(n){
+  steps.forEach((s,i)=>s.classList.toggle("active",i===n));
+  const percent = ((n+1)/totalSteps)*100;
+  progressBar.style.width = percent+"%";
+  progressText.textContent = n+1;
+
+  // Khi tới STEP 4: cập nhật ảnh theo giới tính
+  if(n === 3){ updateBodyTypeImages(); }
+}
+
+function updateBodyTypeImages(){
+  const container = document.getElementById("bodyTypeContainer");
+  if(!container) return;
+  container.innerHTML = "";
+
+  const maleImages = [
+    {label: "Gầy", file: "image1.png"},
+    {label: "Bình thường", file: "image2.png"},
+    {label: "Cơ bắp", file: "image5.png"},
+    {label: "Thừa cân", file: "image6.png"}
+  ];
+
+  const femaleImages = [
+    {label: "Gầy", file: "image8.png"},
+    {label: "Bình thường", file: "image4.png"},
+    {label: "Thừa cân", file: "image7.png"},
+    {label: "Béo phì", file: "image3.png"}
+  ];
+
+  const data = selectedGender === "Nữ" ? femaleImages : maleImages;
+
+  data.forEach(item=>{
+    const label = document.createElement("label");
+    label.className = "text-center me-2";
+    label.innerHTML = `
+      <input type="radio" name="body_type" value="${item.label}" class="visually-hidden body-input" required>
+      <img src="/static/images/${item.file}" class="body-img selectable">
+      <div class="body-label mt-2">${item.label}</div>
+    `;
+    container.appendChild(label);
+  });
+
+  // gán lại sự kiện click chọn hình
+  document.querySelectorAll(".selectable").forEach(img=>{
+    img.addEventListener("click",()=>{
+      const group = img.closest("label").querySelector("input").name;
+      document.querySelectorAll(`input[name='${group}']`).forEach(i=>i.closest("label").querySelector(".selectable").classList.remove("selected"));
+      img.classList.add("selected");
+      img.closest("label").querySelector("input").checked = true;
+    });
+  });
+}
+
+// Xử lý chọn giới tính
+document.querySelectorAll(".gender-img").forEach(img=>{
+  img.addEventListener("click",()=>{
+    document.querySelectorAll(".gender-img").forEach(i=>i.classList.remove("selected"));
+    img.classList.add("selected");
+    img.closest("label").querySelector("input").checked = true;
+    selectedGender = img.alt;
+  });
+});
+
+document.querySelectorAll(".next-step").forEach(btn=>btn.addEventListener("click",()=>{
+  if(currentStep<steps.length-1) currentStep++;
+  showStep(currentStep);
+}));
+
+document.querySelectorAll(".prev-step").forEach(btn=>btn.addEventListener("click",()=>{
+  if(currentStep>0) currentStep--;
+  showStep(currentStep);
+}));
+
+showStep(currentStep);
+</script>
+{% endblock %}
+{% block footer %}
+{% endblock %}

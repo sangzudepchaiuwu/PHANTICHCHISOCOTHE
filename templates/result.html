@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const overviewContent = document.getElementById('overview-content');
+        const dailyDetailContent = document.getElementById('daily-detail-content');
+        const dayLinks = document.querySelectorAll('#v-pills-tab a.nav-link');
+        const overviewLink = document.getElementById('overview-link');
+        const backButtons = document.querySelectorAll('.back-to-overview-btn');
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const totalDays = parseInt("{{ days_list|length }}"); // Tổng số ngày từ Flask
+
+        // --- Hàm xử lý chính cho việc chuyển về Tổng quan ---
+        const handleOverviewClick = (e) => {
+            e.preventDefault();
+            overviewContent.style.display = 'block'; // Hiển thị Tổng quan
+            dailyDetailContent.style.display = 'none'; // Ẩn Chi tiết ngày
+            overviewLink.classList.add('active'); // Kích hoạt tab Tổng quan
+            dayLinks.forEach(link => link.classList.remove('active'));
+
+            // Đảm bảo không có tab chi tiết ngày nào active
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.remove('show', 'active');
+            });
+        };
+        // ---------------------------------------------------
+
+        // Khởi tạo: Mặc định hiển thị Tổng quan
+        overviewContent.style.display = 'block';
+        dailyDetailContent.style.display = 'none';
+
+        // Xử lý click vào liên kết Tổng quan (sử dụng hàm mới)
+        overviewLink.addEventListener('click', handleOverviewClick);
+
+        // Xử lý click vào nút Quay lại trong tab chi tiết ngày
+        backButtons.forEach(button => {
+            button.addEventListener('click', handleOverviewClick);
+        });
+
+
+        // Xử lý click vào liên kết Ngày (Day)
+        dayLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                // Xử lý Toggle UI
+                overviewContent.style.display = 'none';
+                dailyDetailContent.style.display = 'block';
+                overviewLink.classList.remove('active');
+
+                // Xử lý Bootstrap Pills (Tabs)
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+
+                // Ẩn tất cả tabs và hiện tab mục tiêu
+                document.querySelectorAll('.tab-pane').forEach(tab => {
+                    tab.classList.remove('show', 'active');
+                });
+                document.querySelector(targetId).classList.add('show', 'active');
+
+                // Cập nhật trạng thái active của link
+                dayLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Cần thêm logic khi trang được load lần đầu để chọn đúng trạng thái active ban đầu
+        if (dayLinks.length > 0) {
+            // Khi load, nếu có days_list, mặc định sẽ hiển thị Tổng quan
+            overviewLink.classList.add('active');
+            dayLinks.forEach(link => link.classList.remove('active')); // Đảm bảo tất cả ngày đều không active ban đầu
+        }
+        
+        // --- Logic Tự động tính Ngày Kết thúc cho Modal ---
+        function updateEndDate() {
+            if (startDateInput.value) {
+                const start = new Date(startDateInput.value);
+                // Tạo ngày kết thúc: Ngày bắt đầu + Tổng số ngày - 1 (vì ngày bắt đầu là ngày 1)
+                start.setDate(start.getDate() + totalDays - 1); 
+                
+                // Format lại thành YYYY-MM-DD
+                const year = start.getFullYear();
+                const month = String(start.getMonth() + 1).padStart(2, '0');
+                const day = String(start.getDate()).padStart(2, '0');
+                
+                endDateInput.value = `${year}-${month}-${day}`;
+            }
+        }
+
+        // Tự động set ngày hôm nay là ngày bắt đầu và tính ngày kết thúc khi load
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        
+        if (!startDateInput.value) {
+            startDateInput.value = `${year}-${month}-${day}`;
+        }
+        updateEndDate(); // Tính toán ngày kết thúc ban đầu
+        
+        startDateInput.addEventListener('change', updateEndDate);
+        // --- Hết Logic Tự động tính Ngày Kết thúc ---
+
+    });
+    
+</script>
+
+<button type="button" class="btn btn-lg bg-orange mb-4" data-bs-toggle="modal" data-bs-target="#confirmPlanModal">
+    <i class="fas fa-calendar-check"></i> Xác nhận Lộ trình này
+</button>
+
+<div class="modal fade" id="confirmPlanModal" tabindex="-1" aria-labelledby="confirmPlanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content card-dark">
+            <form action="{{ url_for('confirm_plan') }}" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmPlanModalLabel">Xác nhận & Đặt tên Lộ trình</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="ai_result_id" value="{{ rid }}"> 
+                    
+                    <div class="mb-3">
+                        <label for="plan_name" class="form-label">Tên Lộ trình:</label>
+                        <input type="text" class="form-control" id="plan_name" name="plan_name" required value="{{ name }} - {{ lo_trinh }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Ngày Bắt đầu:</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">Ngày Kết thúc:</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        <small class="form-text text-muted">Lộ trình này có tổng cộng {{ days_list|length }} ngày.</small>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success">Lưu và Bắt đầu Lộ trình</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+            <a class="nav-link active mb-2 text-orange" id="overview-link" href="#" role="tab">
+                Lịch {{ days_list|length }} ngày
+            </a>
+
+            <hr>
+
+            {% for d in days_list %}
+            <a class="nav-link text-orange" id="day-{{ d.day }}-tab" href="#day-{{ d.day }}" role="tab">
+                Ngày {{ d.day }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-10">
+
+        <div id="overview-content">
+            <div class="card card-dark p-3 mb-4">
+                <h3 class="text-orange strong"> Đánh giá & Mục tiêu Tổng quát</h3>
+                <hr>
+                <p>
+                    <strong>Tình trạng Cơ thể:</strong>
+                    <span class="badge {{ status_class }} fs-5">{{ status }}</span>
+                </p>
+                <p>
+                    <strong>Người dùng:</strong> {{ name }} ({{ tuoi }} tuổi, {{ gioi_tinh }})
+                </p>
+                <p>
+                    <strong>Mục tiêu:</strong> {{ lo_trinh }}
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-dark p-3 mb-4">
+                        <h4 class="text-orange strong"> Kế hoạch Dinh dưỡng Tổng quan</h4>
+                        <hr>
+                        {{ full_nutrition_html|safe }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-dark p-3 mb-4">
+                        <h4 class="text-orange strong"> Kế hoạch Tập luyện Tổng quan & Lưu ý</h4>
+                        <hr>
+                        {{ full_workout_html|safe }}
+                        <h5 class="mt-3">Ghi chú & Lưu ý Chung</h5>
+                        {{ notes_html|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="daily-detail-content" style="display: none;">
+            <div class="tab-content" id="v-pills-tabContent">
+                {% for d in days_list %}
+                <div class="tab-pane fade" id="day-{{ d.day }}" role="tabpanel" aria-labelledby="day-{{ d.day }}-tab">
+                    
+                    <a href="#" class="btn btn-outline-warning mb-4 back-to-overview-btn">
+                        <i class="fas fa-arrow-left"></i> Quay lại Tổng quan phân tích AI
+                    </a>
+
+                    <h3 class="mb-3"> Ngày {{ d.day }} | Chi tiết</h3>
+
+                    <div class="card card-dark p-3 mb-3">
+                        <h4 class="text-info"> Dinh dưỡng trong ngày</h4>
+                        {{ d.nutrition_html|safe }}
+                    </div>
+
+                    <div class="card card-dark p-3">
+                        <h4 class="text-info"> Bài tập & Lưu ý</h4>
+                        {{ d.workout_html|safe }}
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

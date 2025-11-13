@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow p-4">
+    <h3 class="text-primary mb-3">Thông tin cá nhân</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Họ và tên:</strong> {{ user.ho_va_ten }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Giới tính:</strong> {{ user.gioi_tinh }}</p>
+            <p><strong>Tuổi:</strong> {{ user.tuoi }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Chiều cao:</strong> {{ user.chieu_cao_cm }} cm</p>
+            <p><strong>Cân nặng:</strong> {{ user.can_nang_kg }} kg</p>
+            <p><strong>BMI hiện tại:</strong> {{ user.bmi_hien_tai }}</p>
+        </div>
+    </div>
+    <a href="{{ url_for('bmi_form') }}" class="btn btn-primary mt-3">Cập nhật và bắt đầu lộ trình</a>
+</div>
+
+<!-- Phần danh sách kết quả AI -->
+{% if results %}
+<div class="card shadow p-4 mt-4">
+    <h3 class="text-warning mb-3">Kết quả phân tích AI đã lưu</h3>
+    <ul class="list-group">
+        {% for r in results %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Ngày tạo: {{ r.created_at }} | Tình trạng: {{ r.tinh_trang }}</span>
+            <a href="{{ url_for('view_saved_result', rid=r.id) }}" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="alert alert-info mt-4">
+    Bạn chưa có kết quả phân tích AI nào.
+</div>
+{% endif %}
+{% endblock %}
+{% block footer %}{% endblock %}

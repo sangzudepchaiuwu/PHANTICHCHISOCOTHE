@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center text-center py-5">
+    <div class="col-md-8">
+        <h2 class="mb-4 text-orange">Đang phân tích dữ liệu...</h2>
+        
+        <p class="lead">Đang tạo kế hoạch dinh dưỡng và tập luyện chi tiết cho bạn. Vui lòng chờ đợi.</p>
+        
+        <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <p class="mt-4 text">Quá trình này có thể mất từ 30 giây - 1 phút. Vui lòng không đóng trang.</p>
+        
+        <div class="card p-3 mt-4 text-start mx-auto" style="max-width: 400px;">
+            <h5 class="card-title">Tóm tắt thông tin:</h5>
+            <p><strong>Tên:</strong> {{ data.ho_va_ten }}</p>
+            <p><strong>Tình trạng (ước tính):</strong> <span class="badge {{ data.status_class }}">{{ data.status_label }}</span></p>
+            <p><strong>Mục tiêu:</strong> {{ data.can_nang }}kg -> {{ data.can_nang_mong_muon }}kg trong {{ data.so_ngay }} ngày.</p>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Chuyển hướng ngay lập tức đến route /result (nơi xử lý AI)
+                // Quá trình gọi AI sẽ được thực hiện khi route /result được tải, 
+                // và trình duyệt sẽ phải chờ cho đến khi nhận được result.html.
+                setTimeout(function() {
+                    window.location.href = "{{ url_for('predict_and_show_result') }}";
+                }, 100); 
+            });
+        </script>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}{% endblock %}

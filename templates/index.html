@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <h1 class="display-5 fw-bold text-orange">Phân tích BMI & đề xuất liệu pháp cải thiện sức khỏe</h1>
+      <p class="lead mt-3">
+        Hệ thống AI của chúng tôi giúp bạn hiểu rõ hơn về tình trạng cơ thể thông qua các chỉ số như 
+        <strong>BMI</strong>, <strong>tuổi</strong> và <strong>giới tính</strong>.
+        Sau đó, hệ thống sẽ tự động <strong>phân tích</strong> và <strong>xây dựng lộ trình tập luyện và dinh dưỡng</strong> phù hợp nhất cho bạn.
+      </p>
+      <a class="btn btn-orange btn-lg mt-3" href="{{ url_for('bmi_form') }}">Bắt đầu ngay</a>
+    </div>
+
+    <div class="col-md-6 text-center">
+      <div class="image-showcase">
+        <div class="row g-2 mb-2">
+          <div class="col-12"> 
+            <div class="image-pair">
+              <img src="{{ url_for('static', filename='images/image1.png') }}" alt="Before Male" class="img-fluid rounded shadow-sm">
+              <span class="arrow">&#8594;</span> 
+              <img src="{{ url_for('static', filename='images/image2.png') }}" alt="After Male" class="img-fluid rounded shadow-sm">
+            </div>
+          </div>
+          <div class="col-12 mt-3"> 
+            <div class="image-pair">
+              <img src="{{ url_for('static', filename='images/image3.png') }}" alt="Before Female" class="img-fluid rounded shadow-sm">
+              <span class="arrow">&#8594;</span> 
+              <img src="{{ url_for('static', filename='images/image4.png') }}" alt="After Female" class="img-fluid rounded shadow-sm">
+            </div>
+          </div>
+        </div>
+        <p class="small mt-3 text-muted">Thay đổi tích cực với lộ trình cá nhân hóa của chúng tôi!</p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row text-center py-5 bg-light rounded-3 shadow-sm mb-5">
+    <h3 class="fw-bold mb-4 text-orange">Hệ thống hoạt động như thế nào?</h3>
+    <div class="col-md-4">
+      <h5 class="fw-bold text-orange"> Nhập thông tin cơ bản</h5>
+      <p class="text-black lead mt-3">Bạn chỉ cần nhập tuổi, giới tính, cân nặng và chiều cao. Hệ thống sẽ tự động tính toán chỉ số BMI.</p>
+    </div>
+    <div class="col-md-4">
+      <h5 class="fw-bold text-orange"> Phân tích bằng AI</h5>
+      <p class="text-black lead mt-3">Thuật toán AI sẽ đánh giá tình trạng cơ thể và xác định mức độ phù hợp của các bài tập & chế độ ăn.</p>
+    </div>
+    <div class="col-md-4">
+      <h5 class="fw-bold text-orange" > Nhận lộ trình cá nhân hóa</h5>
+      <p class="text-black lead mt-3">Bạn sẽ nhận được kế hoạch tập luyện và dinh dưỡng chi tiết, chia theo từng ngày và từng tuần.</p>
+    </div>
+  </div>
+
+  <div class="row py-5 **bg-dark-section** rounded-3 shadow-lg">
+    <div class="col-12 text-center mb-4">
+      <h2 class="fw-bold **text-white** mb-2">Phản hồi từ người dùng</h2>
+      <p class="lead **text-light**">Lời khuyên của bạn, định hướng cho chúng tôi!</p>
+    </div>
+    
+    <div class="col-12">
+      <div id="feedbackCarousel" class="carousel slide" data-bs-ride="carousel">
+        
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#feedbackCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#feedbackCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+
+        <div class="carousel-inner">
+          
+          <div class="carousel-item active">
+            <div class="row justify-content-center">
+              
+              <div class="col-md-4 mb-4">
+                <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">👤</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Minh Anh, 26 tuổi</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">“Chỉ sau 3 tuần theo chương trình, tôi đã giảm được 4kg mà vẫn cảm thấy khỏe mạnh và tràn đầy năng lượng!”</p>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-4">
+                <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">👩‍🦱</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Ngọc Hân, 24 tuổi</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">“Tôi bất ngờ vì AI đưa ra thực đơn ăn uống hợp lý, giúp tôi cải thiện sức khỏe rõ rệt chỉ sau 1 tháng.”</p>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-4 d-none d-md-block"> <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">👨‍💻</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Tuấn Kiệt, 31 tuổi</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">“Giao diện dễ dùng, các bài tập rõ ràng và phù hợp với thể trạng của tôi. Rất đáng thử!”</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-item">
+            <div class="row justify-content-center">
+              <div class="col-md-4 mb-4">
+                <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">👱‍♀️</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Hoàng Thanh Thủy</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">"Đây là một chương trình thực sự tuyệt vời, nhờ nó mà tôi đã giảm được 5 kg trong một tuần."</p>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-4">
+                <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">🧔</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Bùi Thu Hoa</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">"Chương trình đầu tiên giúp tôi bắt đầu tìm hiểu lĩnh vực này, bao gồm thực đơn và chế độ luyện tập."</p>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-4 d-none d-md-block"> 
+                <div class="card border-0 **feedback-card-dark** rounded-3 p-3 h-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="profile-icon me-2">🧑</span> 
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 **text-white**">Nguyên Thị Thu</h6>
+                      <span class="stars">★★★★★</span>
+                    </div>
+                  </div>
+                  <p class="**text-light** small">"Đây là một cách tuyệt vời để lấy lại vóc dáng. Đáng ra tôi phải làm vậy từ lâu, mới đúng!"</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
