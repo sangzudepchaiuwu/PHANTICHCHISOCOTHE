@@ -51,9 +51,9 @@ python -m venv venv
 source venv/bin/activate  # Trên Linux/macOS
 # hoặc
 .\venv\Scripts\activate   # Trên Windows
-Cài đặt thư viện
 ```
-pip install -r requirements.txt
+Cài đặt thư viện
+```pip install -r requirements.txt
 ```
 
 
