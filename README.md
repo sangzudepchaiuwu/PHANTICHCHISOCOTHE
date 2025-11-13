@@ -1,3 +1,26 @@
+<h1 align="center">PHÂN LOẠI HOA QUẢ</h1>
+
+<div align="center">
+
+<p align="center">
+  <img src="images/logoDaiNam.png" alt="DaiNam University Logo" width="200"/>
+  <img src="images/LogoAIoTLab.png" alt="AIoTLab Logo" width="170"/>
+</p>
+
+[![Made by AIoTLab](https://img.shields.io/badge/Made%20by%20AIoTLab-blue?style=for-the-badge)](https://www.facebook.com/DNUAIoTLab)
+[![Fit DNU](https://img.shields.io/badge/Fit%20DNU-green?style=for-the-badge)](https://fitdnu.net/)
+[![DaiNam University](https://img.shields.io/badge/DaiNam%20University-red?style=for-the-badge)](https://dainam.edu.vn)
+
+</div>
+
+<h2 align="center">PHÂN LOẠI HOA QUẢ</h2>
+
+<p align="left">
+HỆ THỐNG PHÂN LOẠI HOA QUẢ SỬ DỤNG ESP32CAM VÀ BĂNG CHUYỀN
+</p>
+
+---
+## 🌟 Giới thiệu
 # 🤖 Be My trAIner - Hệ thống Phân tích BMI và Đề xuất Liệu pháp Sức khỏe Cá nhân
 
 Hệ thống AI này kết hợp Machine Learning truyền thống và Generative AI (Google Gemini) để phân tích toàn diện các chỉ số cơ thể của người dùng và tự động xây dựng lộ trình dinh dưỡng, tập luyện cá nhân hóa theo từng ngày.
@@ -15,7 +38,7 @@ Hệ thống AI này kết hợp Machine Learning truyền thống và Generativ
 
 ## 📁 Cấu trúc Dự án
 <img width="292" height="602" alt="image" src="https://github.com/user-attachments/assets/af2f160d-822a-49b4-ae62-4ce7194f8030" />
-## 🛠️ Cài đặt và Khởi chạy
+
 
 ### 1. Cài đặt Môi trường
 
@@ -27,9 +50,7 @@ source venv/bin/activate  # Trên Linux/macOS
 # hoặc
 .\venv\Scripts\activate   # Trên Windows
 
-### 2. Cài đặt thư viện
 
-pip install -r requirements.txt
 
 
 
