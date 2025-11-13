@@ -53,8 +53,7 @@ source venv/bin/activate  # Trên Linux/macOS
 .\venv\Scripts\activate   # Trên Windows
 ```
 Cài đặt thư viện
-```pip install -r requirements.txt
-```
+``` pip install -r requirements.txt```
 
 
 
